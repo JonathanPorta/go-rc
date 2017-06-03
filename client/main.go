@@ -20,7 +20,7 @@ func main() {
 	defer conn.Close()
 	c := pb.NewRemoteControllerClient(conn)
 
-	r, err := c.Left(context.Background(), &pb.ControlRequest{Value: ""})
+	r, err := c.Left(context.Background(), &pb.ControlRequest{Value: "Test"})
 	if err != nil {
 		log.Fatalf("Unable to send ControlRequest::Left - %v", err)
 	}

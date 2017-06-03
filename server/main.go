@@ -5,6 +5,7 @@ import (
 	"net"
 
 	pb "github.com/jonathanporta/go-rc/remotecontrol"
+	"github.com/jonathanporta/go-rc/server/controller"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -17,15 +18,19 @@ const (
 type server struct{}
 
 func (s *server) Left(ctx context.Context, in *pb.ControlRequest) (*pb.ControlReply, error) {
+	go controller.MoveLeft()
 	return &pb.ControlReply{Success: true}, nil
 }
 func (s *server) Right(ctx context.Context, in *pb.ControlRequest) (*pb.ControlReply, error) {
+	go controller.MoveRight()
 	return &pb.ControlReply{Success: true}, nil
 }
 func (s *server) Forward(ctx context.Context, in *pb.ControlRequest) (*pb.ControlReply, error) {
+	go controller.MoveForward()
 	return &pb.ControlReply{Success: true}, nil
 }
 func (s *server) Backward(ctx context.Context, in *pb.ControlRequest) (*pb.ControlReply, error) {
+	go controller.MoveBackward()
 	return &pb.ControlReply{Success: true}, nil
 }
 

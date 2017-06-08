@@ -19,6 +19,7 @@ var keyToString = map[direction]string{
 	DOWN:  "down",
 	RIGHT: "right",
 	LEFT:  "left",
+	STOP:  "stop",
 }
 
 var client pb.RemoteControllerClient
@@ -74,6 +75,8 @@ func dostuff(events chan keyboardEvent, shutdown chan struct{}) {
 		if dir != 0 {
 			fmt.Println(keyToString[dir])
 			go move(dir)
+		} else {
+			go move(STOP)
 		}
 	}
 }
@@ -107,5 +110,7 @@ func move(d direction) {
 		}
 		log.Printf("ControlResponse: %v", r)
 
+	case STOP:
+		log.Printf("Stop")
 	}
 }

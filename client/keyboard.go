@@ -1,6 +1,8 @@
 package main
 
-import "github.com/nsf/termbox-go"
+import (
+	"github.com/nsf/termbox-go"
+)
 
 type keyboardEventType int
 type direction int
@@ -14,6 +16,7 @@ const (
 	LEFT
 	UP
 	DOWN
+	STOP
 )
 
 type keyboardEvent struct {
@@ -31,6 +34,8 @@ func keyToDirection(k termbox.Key) direction {
 		return RIGHT
 	case termbox.KeyArrowUp:
 		return UP
+	case termbox.KeySpace:
+		return STOP
 	default:
 		return 0
 	}
@@ -50,6 +55,8 @@ func listenToKeyboard(evChan chan keyboardEvent) {
 			case termbox.KeyArrowRight:
 				evChan <- keyboardEvent{eventType: MOVE, key: ev.Key}
 			case termbox.KeyArrowUp:
+				evChan <- keyboardEvent{eventType: MOVE, key: ev.Key}
+			case termbox.KeySpace:
 				evChan <- keyboardEvent{eventType: MOVE, key: ev.Key}
 			case termbox.KeyEsc:
 				evChan <- keyboardEvent{eventType: END, key: ev.Key}

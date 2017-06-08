@@ -2,32 +2,56 @@ package controller
 
 import (
 	"fmt"
+
+	"github.com/jonathanporta/go-rc/server/gpio"
 	//"github.com/jonathanporta/go-rc/server/gpio"
 )
 
 const (
-	LEFT_FRONT_ENABLE_PIN   = 17
-	LEFT_FRONT_FORWARD_PIN  = 17
-	LEFT_FRONT_BACKWARD_PIN = 17
+	LEFT_FRONT_ENABLE_PIN   = 23
+	LEFT_FRONT_FORWARD_PIN  = 27
+	LEFT_FRONT_BACKWARD_PIN = 22
 
-	RIGHT_FRONT_ENABLE_PIN   = 17
-	RIGHT_FRONT_FORWARD_PIN  = 17
+	RIGHT_FRONT_ENABLE_PIN   = 15
+	RIGHT_FRONT_FORWARD_PIN  = 18
 	RIGHT_FRONT_BACKWARD_PIN = 17
 
-	LEFT_REAR_ENABLE_PIN   = 17
-	LEFT_REAR_FORWARD_PIN  = 17
-	LEFT_REAR_BACKWARD_PIN = 17
+	LEFT_REAR_ENABLE_PIN   = 24
+	LEFT_REAR_FORWARD_PIN  = 10
+	LEFT_REAR_BACKWARD_PIN = 9
 
-	RIGHT_REAR_ENABLE_PIN   = 17
-	RIGHT_REAR_FORWARD_PIN  = 17
-	RIGHT_REAR_BACKWARD_PIN = 17
+	RIGHT_REAR_ENABLE_PIN   = 11
+	RIGHT_REAR_FORWARD_PIN  = 25
+	RIGHT_REAR_BACKWARD_PIN = 8
 )
 
-func on(pin int) {
-	//gpio.WriteToPin(pin, gpio.ON)
+var forwardPins = []int{
+	LEFT_FRONT_ENABLE_PIN,
+	LEFT_FRONT_FORWARD_PIN,
+	RIGHT_FRONT_ENABLE_PIN,
+	RIGHT_FRONT_FORWARD_PIN,
+	LEFT_REAR_ENABLE_PIN,
+	LEFT_REAR_FORWARD_PIN,
+	RIGHT_REAR_ENABLE_PIN,
+	RIGHT_REAR_FORWARD_PIN,
 }
-func off(pin int) {
-	//gpio.WriteToPin(pin, gpio.OFF)
+
+var backwardPins = []int{
+	LEFT_FRONT_ENABLE_PIN,
+	LEFT_FRONT_BACKWARD_PIN,
+	RIGHT_FRONT_ENABLE_PIN,
+	RIGHT_FRONT_BACKWARD_PIN,
+	LEFT_REAR_ENABLE_PIN,
+	LEFT_REAR_BACKWARD_PIN,
+	RIGHT_REAR_ENABLE_PIN,
+	RIGHT_REAR_BACKWARD_PIN,
+}
+
+func on(pins []int) {
+	gpio.WriteToPins(pins, gpio.ON)
+}
+func off(pin []int) {
+	gpio.WriteToPins(pins, gpio.OFF)
 }
 
 func MoveLeft() {
@@ -44,9 +68,29 @@ func MoveForward() {
 	//RIGHT_FRONT_ENABLE_PIN
 	//RIGHT_REAR_ENABLE_PIN
 	fmt.Println("MoveForward")
+
+	on(forwardPins)
 }
 func MoveBackward() {
 	//RIGHT_FRONT_ENABLE_PIN
 	//RIGHT_REAR_ENABLE_PIN
 	fmt.Println("MoveBackward")
+}
+func Stop() {
+	fmt.Println("STOP")
+	targetPins := []int{
+		LEFT_FRONT_ENABLE_PIN,
+		LEFT_FRONT_FORWARD_PIN,
+		LEFT_FRONT_BACKWARD_PIN,
+		RIGHT_FRONT_ENABLE_PIN,
+		RIGHT_FRONT_FORWARD_PIN,
+		RIGHT_FRONT_BACKWARD_PIN,
+		LEFT_REAR_ENABLE_PIN,
+		LEFT_REAR_FORWARD_PIN,
+		LEFT_REAR_BACKWARD_PIN,
+		RIGHT_REAR_ENABLE_PIN,
+		RIGHT_REAR_FORWARD_PIN,
+		RIGHT_REAR_BACKWARD_PIN,
+	}
+	off(targetPins)
 }

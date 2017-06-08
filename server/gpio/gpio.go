@@ -11,16 +11,27 @@ const (
 	OFF
 )
 
-func Reset() {
+func Reset(targetPins []int) {
 	if err := embd.InitGPIO(); err != nil {
 		panic(err)
 	}
 	defer embd.CloseGPIO()
-	targetPins := []int{15, 18, 17}
+
 	for _, targetPin := range targetPins {
 
 		embd.SetDirection(targetPin, embd.Out)
 		embd.DigitalWrite(targetPin, embd.Low)
+	}
+}
+
+func WriteToPins(targetPins int, state int) {
+	for _, targetPin := range targetPins {
+		switch state {
+		case ON:
+			embd.DigitalWrite(targetPin, embd.High)
+		case OFF:
+			embd.DigitalWrite(targetPin, embd.Low)
+		}
 	}
 }
 

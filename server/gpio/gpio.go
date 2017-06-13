@@ -1,8 +1,9 @@
 package gpio
 
 import (
-	"github.com/kidoman/embd"
 	"fmt"
+
+	"github.com/kidoman/embd"
 
 	_ "github.com/kidoman/embd/host/all"
 )
@@ -13,8 +14,6 @@ const (
 )
 
 func Reset(targetPins []int) {
-	defer embd.CloseGPIO()
-
 	for _, targetPin := range targetPins {
 		digitalWrite(targetPin, OFF)
 	}
@@ -31,18 +30,19 @@ func WriteToPin(targetPin int, state int) {
 }
 
 func digitalWrite(targetPin int, state int) {
+	defer embd.CloseGPIO()
 	if err := embd.InitGPIO(); err != nil {
-        	//TODO: Return err
-	        panic(err)
-        }
+		//TODO: Return err
+		panic(err)
+	}
 	embd.SetDirection(targetPin, embd.Out)
 	switch state {
-        case ON:
-                fmt.Printf("Pulling pin '%v' high\n", targetPin)
+	case ON:
+		fmt.Printf("Pulling pin '%v' high\n", targetPin)
 		embd.DigitalWrite(targetPin, embd.High)
-        case OFF:
-                fmt.Printf("Pulling pin '%v' low\n", targetPin)
+	case OFF:
+		fmt.Printf("Pulling pin '%v' low\n", targetPin)
 		embd.DigitalWrite(targetPin, embd.Low)
-        }
+	}
 
 }

@@ -13,8 +13,10 @@ const (
 	OFF
 )
 
+var pins = make(map[int]*embd.DigitalPin)
+
 func Reset(targetPins []int) {
-	defer embd.CloseGPIO()	
+	defer embd.CloseGPIO()
 	for _, targetPin := range targetPins {
 		digitalWrite(targetPin, OFF)
 	}
@@ -31,18 +33,32 @@ func WriteToPin(targetPin int, state int) {
 }
 
 func digitalWrite(targetPin int, state int) {
+	pin := pins[targetPin]
+	if pin == nil {
+		fmt.Printf("Pin '%v' not initialized yet\n", targetPin)
+		pin, err := embd.NewDigitalPin(targetPin)
+		if err != nil {
+			fmt.Printf("Unable to init pin: '%v' ", targetPin)
+			panic(err)
+		}
+		pin.SetDirection(embd.Out)
+		pins[targetPin] = &pin
+	}
+
 	if err := embd.InitGPIO(); err != nil {
 		//TODO: Return err
 		panic(err)
 	}
-	embd.SetDirection(targetPin, embd.Out)
+	//embd.SetDirection(targetPin, embd.Out)
 	switch state {
 	case ON:
 		fmt.Printf("Pulling pin '%v' high\n", targetPin)
-		embd.DigitalWrite(targetPin, embd.High)
+		fmt.Printf("Pin: '%v'\n", pin)
+		pin.Write(embd.High)
 	case OFF:
 		fmt.Printf("Pulling pin '%v' low\n", targetPin)
-		embd.DigitalWrite(targetPin, embd.Low)
+		fmt.Printf("Pin: '%v'\n", pin)
+		pin.Write(embd.Low)
 	}
 
 }

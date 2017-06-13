@@ -38,10 +38,10 @@ func digitalWrite(targetPin int, state int) {
 	embd.SetDirection(targetPin, embd.Out)
 	switch state {
         case ON:
-                fmt.Println("Pulling pin '%s' high", targetPin)
+                fmt.Printf("Pulling pin '%v' high\n", targetPin)
 		embd.DigitalWrite(targetPin, embd.High)
         case OFF:
-                fmt.Println("Pulling pin '%s' low", targetPin)
+                fmt.Printf("Pulling pin '%v' low\n", targetPin)
 		embd.DigitalWrite(targetPin, embd.Low)
         }
 

@@ -1,14 +1,14 @@
 package main
 
 import (
-	"log"
-	"net"
-
+	"fmt"
 	pb "github.com/jonathanporta/go-rc/remotecontrol"
 	"github.com/jonathanporta/go-rc/server/controller"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"log"
+	"net"
 )
 
 const (
@@ -50,5 +50,7 @@ func main() {
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
+	} else {
+		fmt.Printf("Listening on '%v'\n", port)
 	}
 }

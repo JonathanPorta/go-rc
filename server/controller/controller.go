@@ -2,110 +2,107 @@ package controller
 
 import (
 	"fmt"
-
-	"github.com/jonathanporta/go-rc/server/gpio"
+	"log"
+	//"github.com/jonathanporta/go-rc/server/gpio"
 )
 
-const (
-	LEFT_FRONT_ENABLE_PIN   = 23
-	LEFT_FRONT_FORWARD_PIN  = 27
-	LEFT_FRONT_BACKWARD_PIN = 22
-
-	RIGHT_FRONT_ENABLE_PIN   = 15
-	RIGHT_FRONT_FORWARD_PIN  = 18
-	RIGHT_FRONT_BACKWARD_PIN = 17
-
-	LEFT_REAR_ENABLE_PIN   = 24
-	LEFT_REAR_FORWARD_PIN  = 10
-	LEFT_REAR_BACKWARD_PIN = 9
-
-	RIGHT_REAR_ENABLE_PIN   = 11
-	RIGHT_REAR_FORWARD_PIN  = 25
-	RIGHT_REAR_BACKWARD_PIN = 8
-)
-
-var forwardPins = []int{
-	LEFT_FRONT_ENABLE_PIN,
-	LEFT_FRONT_FORWARD_PIN,
-	RIGHT_FRONT_ENABLE_PIN,
-	RIGHT_FRONT_FORWARD_PIN,
-	LEFT_REAR_ENABLE_PIN,
-	LEFT_REAR_FORWARD_PIN,
-	RIGHT_REAR_ENABLE_PIN,
-	RIGHT_REAR_FORWARD_PIN,
+type Controller interface {
+	On([]int)
+	Off([]int)
 }
 
-var forwardStopPins = []int{
-	LEFT_FRONT_FORWARD_PIN,
-	RIGHT_FRONT_FORWARD_PIN,
-	LEFT_REAR_FORWARD_PIN,
-	RIGHT_REAR_FORWARD_PIN,
+type CarController struct {
+	leftFrontMotor  HBridgeMotor
+	rightFrontMotor HBridgeMotor
+	leftBackMotor   HBridgeMotor
+	rightBackMotor  HBridgeMotor
 }
 
-var backwardPins = []int{
-	LEFT_FRONT_ENABLE_PIN,
-	LEFT_FRONT_BACKWARD_PIN,
-	RIGHT_FRONT_ENABLE_PIN,
-	RIGHT_FRONT_BACKWARD_PIN,
-	LEFT_REAR_ENABLE_PIN,
-	LEFT_REAR_BACKWARD_PIN,
-	RIGHT_REAR_ENABLE_PIN,
-	RIGHT_REAR_BACKWARD_PIN,
-}
-
-var backwardStopPins = []int{
-	LEFT_FRONT_BACKWARD_PIN,
-	RIGHT_FRONT_BACKWARD_PIN,
-	LEFT_REAR_BACKWARD_PIN,
-	RIGHT_REAR_BACKWARD_PIN,
-}
-
-func on(pins []int) {
-	gpio.WriteToPins(pins, gpio.ON)
-}
-func off(pins []int) {
-	gpio.WriteToPins(pins, gpio.OFF)
-}
-
-func MoveLeft() {
-	//RIGHT_FRONT_ENABLE_PIN
-	//RIGHT_REAR_ENABLE_PIN
-	fmt.Println("MoveLeft")
-}
-func MoveRight() {
-	//RIGHT_FRONT_ENABLE_PIN
-	//RIGHT_REAR_ENABLE_PIN
-	fmt.Println("MoveRight")
-}
-func MoveForward() {
-	//RIGHT_FRONT_ENABLE_PIN
-	//RIGHT_REAR_ENABLE_PIN
-	fmt.Println("MoveForward")
-	off(backwardStopPins)
-	on(forwardPins)
-}
-func MoveBackward() {
-	//RIGHT_FRONT_ENABLE_PIN
-	//RIGHT_REAR_ENABLE_PIN
-	fmt.Println("MoveBackward")
-	off(forwardStopPins)
-	on(backwardPins)
-}
-func Stop() {
-	fmt.Println("STOP")
-	targetPins := []int{
-		// LEFT_FRONT_ENABLE_PIN,
-		LEFT_FRONT_FORWARD_PIN,
-		LEFT_FRONT_BACKWARD_PIN,
-		// RIGHT_FRONT_ENABLE_PIN,
-		RIGHT_FRONT_FORWARD_PIN,
-		RIGHT_FRONT_BACKWARD_PIN,
-		// LEFT_REAR_ENABLE_PIN,
-		LEFT_REAR_FORWARD_PIN,
-		LEFT_REAR_BACKWARD_PIN,
-		// RIGHT_REAR_ENABLE_PIN,
-		RIGHT_REAR_FORWARD_PIN,
-		RIGHT_REAR_BACKWARD_PIN,
+func (c *CarController) AddMotor(name string, enablePin int, forwardPin int, backwardPin int) {
+	gc := GPIOController{}
+	switch name {
+	case "FrontLeft":
+		fmt.Printf("NewHBridgeMotor(gc, enablePin, forwardPin, backwardPin)::NewHBridgeMotor(gc, %v, %v, %v)", enablePin, forwardPin, backwardPin)
+		c.leftFrontMotor = NewHBridgeMotor(gc, enablePin, forwardPin, backwardPin)
+		// c.leftFrontMotor = lfm
+	case "FrontRight":
+		frm := NewHBridgeMotor(gc, enablePin, forwardPin, backwardPin)
+		c.rightFrontMotor = frm
+	case "BackLeft":
+		blm := NewHBridgeMotor(gc, enablePin, forwardPin, backwardPin)
+		c.leftBackMotor = blm
+	case "BackRight":
+		brm := NewHBridgeMotor(gc, enablePin, forwardPin, backwardPin)
+		c.rightBackMotor = brm
+	default:
+		fmt.Printf("Unknown motor configuration '%s' provided. Should be one of 'FrontLeft', 'FrontRight', 'BackLeft', or 'BackRight':\n%v\n%v\n%v\n", name, enablePin, forwardPin, backwardPin)
+		log.Fatalf("Please correct your configuration... Exiting...")
 	}
-	off(targetPins)
+}
+
+func (c *CarController) Left() {
+	fmt.Println("MoveLeft")
+
+	c.leftFrontMotor.Backward()
+	c.leftBackMotor.Backward()
+	c.rightFrontMotor.Forward()
+	c.rightBackMotor.Forward()
+}
+func (c *CarController) Right() {
+	fmt.Println("MoveRight")
+
+	c.leftFrontMotor.Forward()
+	c.leftBackMotor.Forward()
+	c.rightFrontMotor.Backward()
+	c.rightBackMotor.Backward()
+}
+func (c CarController) Forward() {
+	fmt.Println("MoveForward")
+
+	c.leftFrontMotor.Forward()
+	c.rightFrontMotor.Forward()
+	c.leftBackMotor.Forward()
+	c.rightBackMotor.Forward()
+}
+func (c CarController) Backward() {
+	fmt.Println("MoveBackward")
+
+	c.leftFrontMotor.Backward()
+	c.rightFrontMotor.Backward()
+	c.leftBackMotor.Backward()
+	c.rightBackMotor.Backward()
+}
+func (c CarController) Stop() {
+	fmt.Println("STOP")
+
+	c.leftFrontMotor.Stop()
+	c.rightFrontMotor.Stop()
+	c.leftBackMotor.Stop()
+	c.rightBackMotor.Stop()
+}
+
+func (c *CarController) On(pins []int) {
+	//gpio.WriteToPins(pins, gpio.ON)
+}
+func (c *CarController) Off(pins []int) {
+	//gpio.WriteToPins(pins, gpio.OFF)
+}
+
+func NewCarController(motors []MotorConfiguration) CarController {
+	c := CarController{}
+	for _, m := range motors {
+		c.AddMotor(m.Name, m.Pins.Enable, m.Pins.Forward, m.Pins.Backward)
+	}
+	fmt.Printf("\n\n\n\nNewCarController\n\n%v\n\n", c)
+	return c
+}
+
+type GPIOController struct{}
+
+func (gc *GPIOController) On(pin int) {
+	fmt.Printf("Writing 'On' to '%v'.\n", pin)
+}
+
+func (gc *GPIOController) Off(pin int) {
+	fmt.Printf("Writing 'Off' to '%v'.\n", pin)
 }

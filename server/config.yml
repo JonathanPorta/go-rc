@@ -1,0 +1,21 @@
+motors:
+- name: FrontLeft
+  pins:
+    enable: 23
+    forward: 27
+    backward: 22
+- name: FrontRight
+  pins:
+    enable: 15
+    forward: 18
+    backward: 17
+- name: BackLeft
+  pins:
+    enable: 24
+    forward: 10
+    backward: 9
+- name: BackRight
+  pins:
+    enable: 11
+    forward: 25
+    backward: 8

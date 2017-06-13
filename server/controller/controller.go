@@ -50,7 +50,7 @@ var backwardPins = []int{
 func on(pins []int) {
 	gpio.WriteToPins(pins, gpio.ON)
 }
-func off(pin []int) {
+func off(pins []int) {
 	gpio.WriteToPins(pins, gpio.OFF)
 }
 

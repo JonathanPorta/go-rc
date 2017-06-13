@@ -24,7 +24,7 @@ func Reset(targetPins []int) {
 	}
 }
 
-func WriteToPins(targetPins int, state int) {
+func WriteToPins(targetPins []int, state int) {
 	for _, targetPin := range targetPins {
 		switch state {
 		case ON:

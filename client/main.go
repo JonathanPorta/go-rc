@@ -110,6 +110,11 @@ func move(d direction) {
 		log.Printf("ControlResponse: %v", r)
 
 	case STOP:
-		log.Printf("Stop")
+		r, err := client.Stop(context.Background(), &pb.ControlRequest{Value: "Test"})
+		if err != nil {
+			log.Fatalf("Unable to send ControlRequest::Stop - %v", err)
+		}
+		log.Printf("ControlResponse: %v", r)
+
 	}
 }

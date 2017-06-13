@@ -68,13 +68,14 @@ func MoveForward() {
 	//RIGHT_FRONT_ENABLE_PIN
 	//RIGHT_REAR_ENABLE_PIN
 	fmt.Println("MoveForward")
-
+	off(backwardPins)
 	on(forwardPins)
 }
 func MoveBackward() {
 	//RIGHT_FRONT_ENABLE_PIN
 	//RIGHT_REAR_ENABLE_PIN
 	fmt.Println("MoveBackward")
+	off(forwardPins)
 	on(backwardPins)
 }
 func Stop() {

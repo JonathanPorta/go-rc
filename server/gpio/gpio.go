@@ -42,7 +42,7 @@ func digitalWrite(targetPin int, state int) {
 			panic(err)
 		}
 		pin.SetDirection(embd.Out)
-		pins[targetPin] = &pin
+		pins[targetPin] = pin
 	}
 
 	if err := embd.InitGPIO(); err != nil {

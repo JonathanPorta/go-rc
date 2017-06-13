@@ -36,14 +36,15 @@ func digitalWrite(targetPin int, state int) {
 	pin := pins[targetPin]
 	if pin == nil {
 		fmt.Printf("Pin '%v' not initialized yet\n", targetPin)
-		pin, err := embd.NewDigitalPin(targetPin)
+		p, err := embd.NewDigitalPin(targetPin)
 		if err != nil {
 			fmt.Printf("Unable to init pin: '%v' ", targetPin)
 			panic(err)
 		}
-		pin.SetDirection(embd.Out)
-		fmt.Printf("Pin init'd: '%v'\n", pin)
-		pins[targetPin] = pin
+		p.SetDirection(embd.Out)
+		fmt.Printf("Pin init'd: '%v'\n", p)
+		pins[targetPin] = p
+		pin = p
 	}
 
 	if err := embd.InitGPIO(); err != nil {

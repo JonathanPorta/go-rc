@@ -14,6 +14,7 @@ const (
 )
 
 func Reset(targetPins []int) {
+	defer embd.CloseGPIO()	
 	for _, targetPin := range targetPins {
 		digitalWrite(targetPin, OFF)
 	}
@@ -30,7 +31,6 @@ func WriteToPin(targetPin int, state int) {
 }
 
 func digitalWrite(targetPin int, state int) {
-	defer embd.CloseGPIO()
 	if err := embd.InitGPIO(); err != nil {
 		//TODO: Return err
 		panic(err)

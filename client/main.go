@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 
@@ -8,10 +9,6 @@ import (
 	termbox "github.com/nsf/termbox-go"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-)
-
-const (
-	address = "127.0.0.1:9000"
 )
 
 var keyToString = map[direction]string{
@@ -25,6 +22,8 @@ var keyToString = map[direction]string{
 var client pb.RemoteControllerClient
 
 func main() {
+	flag.Parse()
+	address := flag.Arg(0)
 	// Establish a connection with the server.
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {

@@ -39,10 +39,14 @@ func (s *server) Stop(ctx context.Context, in *pb.ControlRequest) (*pb.ControlRe
 }
 
 func main() {
+	fmt.Printf("Starting up server...\n")
+
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
-	}
+	}else {
+                fmt.Printf("Listening on '%v'\n", port)
+        }
 
 	s := grpc.NewServer()
 	pb.RegisterRemoteControllerServer(s, &server{})
@@ -50,7 +54,7 @@ func main() {
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
-	} else {
-		fmt.Printf("Listening on '%v'\n", port)
 	}
+
+	fmt.Printf("Exiting!\n") 
 }

@@ -33,6 +33,10 @@ func (s *server) Backward(ctx context.Context, in *pb.ControlRequest) (*pb.Contr
 	go controller.MoveBackward()
 	return &pb.ControlReply{Success: true}, nil
 }
+func (s *server) Stop(ctx context.Context, in *pb.ControlRequest) (*pb.ControlReply, error) {
+	go controller.Stop()
+	return &pb.ControlReply{Success: true}, nil
+}
 
 func main() {
 	lis, err := net.Listen("tcp", port)

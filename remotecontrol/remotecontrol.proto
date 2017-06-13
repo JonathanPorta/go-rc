@@ -9,6 +9,7 @@ service RemoteController {
     rpc Right(ControlRequest) returns (ControlReply) {}
     rpc Forward(ControlRequest) returns (ControlReply) {}
     rpc Backward(ControlRequest) returns (ControlReply) {}
+		rpc Stop(ControlRequest) returns (ControlReply) {}
 }
 
 message ControlRequest {

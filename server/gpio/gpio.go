@@ -42,6 +42,7 @@ func digitalWrite(targetPin int, state int) {
 			panic(err)
 		}
 		pin.SetDirection(embd.Out)
+		fmt.Printf("Pin init'd: '%v'\n", pin)
 		pins[targetPin] = pin
 	}
 

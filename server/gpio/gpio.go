@@ -54,11 +54,11 @@ func digitalWrite(targetPin int, state int) {
 	case ON:
 		fmt.Printf("Pulling pin '%v' high\n", targetPin)
 		fmt.Printf("Pin: '%v'\n", pin)
-		pin.Write(embd.High)
+		&pin.Write(embd.High)
 	case OFF:
 		fmt.Printf("Pulling pin '%v' low\n", targetPin)
 		fmt.Printf("Pin: '%v'\n", pin)
-		pin.Write(embd.Low)
+		&pin.Write(embd.Low)
 	}
 
 }

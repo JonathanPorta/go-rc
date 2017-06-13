@@ -18,23 +18,23 @@ const (
 type server struct{}
 
 func (s *server) Left(ctx context.Context, in *pb.ControlRequest) (*pb.ControlReply, error) {
-	go controller.MoveLeft()
+	controller.MoveLeft()
 	return &pb.ControlReply{Success: true}, nil
 }
 func (s *server) Right(ctx context.Context, in *pb.ControlRequest) (*pb.ControlReply, error) {
-	go controller.MoveRight()
+	controller.MoveRight()
 	return &pb.ControlReply{Success: true}, nil
 }
 func (s *server) Forward(ctx context.Context, in *pb.ControlRequest) (*pb.ControlReply, error) {
-	go controller.MoveForward()
+	controller.MoveForward()
 	return &pb.ControlReply{Success: true}, nil
 }
 func (s *server) Backward(ctx context.Context, in *pb.ControlRequest) (*pb.ControlReply, error) {
-	go controller.MoveBackward()
+	controller.MoveBackward()
 	return &pb.ControlReply{Success: true}, nil
 }
 func (s *server) Stop(ctx context.Context, in *pb.ControlRequest) (*pb.ControlReply, error) {
-	go controller.Stop()
+	controller.Stop()
 	return &pb.ControlReply{Success: true}, nil
 }
 

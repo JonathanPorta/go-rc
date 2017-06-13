@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/jonathanporta/go-rc/server/gpio"
-	//"github.com/jonathanporta/go-rc/server/gpio"
 )
 
 const (
@@ -36,6 +35,13 @@ var forwardPins = []int{
 	RIGHT_REAR_FORWARD_PIN,
 }
 
+var forwardStopPins = []int{
+	LEFT_FRONT_FORWARD_PIN,
+	RIGHT_FRONT_FORWARD_PIN,
+	LEFT_REAR_FORWARD_PIN,
+	RIGHT_REAR_FORWARD_PIN,
+}
+
 var backwardPins = []int{
 	LEFT_FRONT_ENABLE_PIN,
 	LEFT_FRONT_BACKWARD_PIN,
@@ -44,6 +50,13 @@ var backwardPins = []int{
 	LEFT_REAR_ENABLE_PIN,
 	LEFT_REAR_BACKWARD_PIN,
 	RIGHT_REAR_ENABLE_PIN,
+	RIGHT_REAR_BACKWARD_PIN,
+}
+
+var backwardStopPins = []int{
+	LEFT_FRONT_BACKWARD_PIN,
+	RIGHT_FRONT_BACKWARD_PIN,
+	LEFT_REAR_BACKWARD_PIN,
 	RIGHT_REAR_BACKWARD_PIN,
 }
 
@@ -68,29 +81,29 @@ func MoveForward() {
 	//RIGHT_FRONT_ENABLE_PIN
 	//RIGHT_REAR_ENABLE_PIN
 	fmt.Println("MoveForward")
-	off(backwardPins)
+	off(backwardStopPins)
 	on(forwardPins)
 }
 func MoveBackward() {
 	//RIGHT_FRONT_ENABLE_PIN
 	//RIGHT_REAR_ENABLE_PIN
 	fmt.Println("MoveBackward")
-	off(forwardPins)
+	off(forwardStopPins)
 	on(backwardPins)
 }
 func Stop() {
 	fmt.Println("STOP")
 	targetPins := []int{
-		LEFT_FRONT_ENABLE_PIN,
+		// LEFT_FRONT_ENABLE_PIN,
 		LEFT_FRONT_FORWARD_PIN,
 		LEFT_FRONT_BACKWARD_PIN,
-		RIGHT_FRONT_ENABLE_PIN,
+		// RIGHT_FRONT_ENABLE_PIN,
 		RIGHT_FRONT_FORWARD_PIN,
 		RIGHT_FRONT_BACKWARD_PIN,
-		LEFT_REAR_ENABLE_PIN,
+		// LEFT_REAR_ENABLE_PIN,
 		LEFT_REAR_FORWARD_PIN,
 		LEFT_REAR_BACKWARD_PIN,
-		RIGHT_REAR_ENABLE_PIN,
+		// RIGHT_REAR_ENABLE_PIN,
 		RIGHT_REAR_FORWARD_PIN,
 		RIGHT_REAR_BACKWARD_PIN,
 	}

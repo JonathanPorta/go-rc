@@ -103,10 +103,10 @@ type GPIOController struct{}
 
 func (gc *GPIOController) On(pin int) {
 	fmt.Printf("Writing 'On' to '%v'.\n", pin)
-	gpio.WriteToPins(pins, gpio.ON)
+	gpio.WriteToPin(pin, gpio.ON)
 }
 
 func (gc *GPIOController) Off(pin int) {
 	fmt.Printf("Writing 'Off' to '%v'.\n", pin)
-	gpio.WriteToPins(pins, gpio.OFF)
+	gpio.WriteToPin(pin, gpio.OFF)
 }

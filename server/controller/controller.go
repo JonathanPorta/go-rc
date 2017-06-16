@@ -84,10 +84,10 @@ func (c CarController) Stop() {
 }
 
 func (c *CarController) On(pins []int) {
-	gpio.WriteToPins(pins, gpio.ON)
+
 }
 func (c *CarController) Off(pins []int) {
-	gpio.WriteToPins(pins, gpio.OFF)
+
 }
 
 func NewCarController(motors []MotorConfiguration) CarController {
@@ -103,8 +103,10 @@ type GPIOController struct{}
 
 func (gc *GPIOController) On(pin int) {
 	fmt.Printf("Writing 'On' to '%v'.\n", pin)
+	gpio.WriteToPins(pins, gpio.ON)
 }
 
 func (gc *GPIOController) Off(pin int) {
 	fmt.Printf("Writing 'Off' to '%v'.\n", pin)
+	gpio.WriteToPins(pins, gpio.OFF)
 }

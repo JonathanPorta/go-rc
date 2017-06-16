@@ -3,6 +3,8 @@ package controller
 import (
 	"fmt"
 	"log"
+
+	"github.com/jonathanporta/go-rc/server/gpio"
 	//"github.com/jonathanporta/go-rc/server/gpio"
 )
 
@@ -82,10 +84,10 @@ func (c CarController) Stop() {
 }
 
 func (c *CarController) On(pins []int) {
-	//gpio.WriteToPins(pins, gpio.ON)
+	gpio.WriteToPins(pins, gpio.ON)
 }
 func (c *CarController) Off(pins []int) {
-	//gpio.WriteToPins(pins, gpio.OFF)
+	gpio.WriteToPins(pins, gpio.OFF)
 }
 
 func NewCarController(motors []MotorConfiguration) CarController {
